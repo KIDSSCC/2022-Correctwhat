@@ -70,8 +70,10 @@ run1:app
 	@qemu-arm -L /usr/arm-linux-gnueabihf/ ./arm
 	@echo $$?
 
-runtimetest:app
+timetest:app
 	@arm-linux-gnueabihf-gcc arm.s $(SYSLIB_PATH)/libsysy.a -o arm
+	@/usr/bin/time -f "runningtime: %E" sh -c 'for i in $$(seq 1 500); do qemu-arm -L /usr/arm-linux-gnueabihf/ ./arm; done'
+
 
 gdb:app
 	@gdb $(BINARY)
